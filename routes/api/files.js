@@ -1,3 +1,4 @@
+// routes/api/files.js
 import express from 'express';
 import File from '../../models/file.js';
 
@@ -5,35 +6,26 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
-  const search = req.query.search || '';
+  const limit = 10;
 
-  const skip = (page - 1) * limit;
+  const files = await File.find({})
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
-  const searchQuery = search
-    ? {
-        name: { $regex: search, $options: 'i' }, // case-insensitive search
-      }
-    : {};
+  const count = await File.countDocuments();
 
-  try {
-    const totalFiles = await File.countDocuments(searchQuery);
-    const totalPages = Math.ceil(totalFiles / limit);
+  res.json({
+    page,
+    totalPages: Math.ceil(count / limit),
+    files
+  });
+});
 
-    const files = await File.find(searchQuery)
-      .sort({ uploadedAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
-    res.json({
-      page,
-      totalPages,
-      files,
-    });
-  } catch (err) {
-    console.error('Error fetching files:', err);
-    res.status(500).json({ error: 'Failed to fetch files' });
-  }
+router.get('/:id', async (req, res) => {
+  const file = await File.findById(req.params.id);
+  if (!file) return res.status(404).json({ message: 'File not found' });
+  res.json(file);
 });
 
 export default router;

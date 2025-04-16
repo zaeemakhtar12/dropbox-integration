@@ -15,7 +15,18 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/files', fileRoutes);
 
-// Dropbox webhook endpoint
+// ✅ Dropbox webhook verification (GET /webhook?challenge=...)
+app.get('/webhook', (req, res) => {
+  const challenge = req.query.challenge;
+  if (challenge) {
+    console.log('📞 Dropbox webhook verification challenge received');
+    res.status(200).send(challenge);
+  } else {
+    res.status(400).send('Missing challenge');
+  }
+});
+
+// ✅ Dropbox webhook event listener (POST /webhook)
 app.post('/webhook', async (req, res) => {
   console.log('📦 Dropbox webhook received:', req.body);
   res.status(200).send('OK');

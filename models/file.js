@@ -1,12 +1,18 @@
+// models/file.js
 import mongoose from 'mongoose';
 
 const fileSchema = new mongoose.Schema({
   name: String,
   path: String,
-  uploadedAt: { type: Date, default: Date.now },
-  metadata: Object,
-});
+  metadata: {
+    rowCount: Number,
+    headers: [String],
+    preview: [{}]
+  },
+  status: {
+    type: String,
+    default: 'Processed'
+  }
+}, { timestamps: true }); // <-- adds createdAt and updatedAt
 
-const File = mongoose.model('File', fileSchema);
-
-export default File;
+export default mongoose.model('File', fileSchema);
