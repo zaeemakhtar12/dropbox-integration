@@ -1,4 +1,4 @@
-// models/file.js
+
 import mongoose from 'mongoose';
 
 const fileSchema = new mongoose.Schema({
@@ -13,6 +13,6 @@ const fileSchema = new mongoose.Schema({
     type: String,
     default: 'Processed'
   }
-}, { timestamps: true }); // <-- adds createdAt and updatedAt
+}, { timestamps: true }); 
 
 export default mongoose.model('File', fileSchema);

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const handleDropboxWebhook = require('../handleWebhook');
 
-// GET route for Dropbox webhook verification
 router.get('/', (req, res) => {
   const challenge = req.query.challenge;
   if (challenge) {
@@ -12,7 +11,6 @@ router.get('/', (req, res) => {
   }
 });
 
-// POST route to handle Dropbox webhook events
 router.post('/', async (req, res) => {
   console.log('📡 Webhook POST received!');
   console.log('Body:', req.body);

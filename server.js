@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-import { processNewFiles } from './dropbox.js';
+import { processNewFiles } from './services/dropbox.js';
 import fileRoutes from './routes/api/files.js';
 import cors from 'cors';
 
@@ -15,7 +15,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/files', fileRoutes);
 
-// ✅ Dropbox webhook verification (GET /webhook?challenge=...)
 app.get('/webhook', (req, res) => {
   const challenge = req.query.challenge;
   if (challenge) {
@@ -26,7 +25,6 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-// ✅ Dropbox webhook event listener (POST /webhook)
 app.post('/webhook', async (req, res) => {
   console.log('📦 Dropbox webhook received:', req.body);
   res.status(200).send('OK');

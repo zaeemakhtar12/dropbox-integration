@@ -1,4 +1,3 @@
-// routes/api/files.js
 import express from 'express';
 import File from '../../models/file.js';
 

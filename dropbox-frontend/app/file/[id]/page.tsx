@@ -16,7 +16,7 @@ type File = {
 
 export default function FileDetailPage() {
   const params = useParams();
-  const id = params?.id?.toString(); // Ensure it's a string
+  const id = params?.id?.toString();
 
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);

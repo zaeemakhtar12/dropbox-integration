@@ -1,9 +1,8 @@
-// dropbox.js
 import fs from 'fs-extra';
 import path from 'path';
 import { Dropbox } from 'dropbox';
 import dotenv from 'dotenv';
-import File from './models/file.js';
+import File from '../models/file.js';
 import csvParser from 'csv-parser';
 import fetch from 'node-fetch';
 
@@ -11,6 +10,7 @@ dotenv.config();
 
 const dbx = new Dropbox({ accessToken: process.env.DROPBOX_ACCESS_TOKEN, fetch });
 const downloadFolder = path.join(process.cwd(), 'downloads');
+const previewLimit = parseInt(process.env.PREVIEW_LIMIT || '5');
 
 export async function processNewFiles() {
   const folderPath = process.env.WATCH_FOLDER_PATH || '/uploads';
@@ -24,7 +24,7 @@ export async function processNewFiles() {
 
         const alreadyExists = await File.findOne({ path: entry.path_lower });
         if (alreadyExists) {
-          console.log(`⏭️ Already downloaded: ${entry.name}`);
+          console.log(`⚠️ File already processed: ${entry.name}`);
           continue;
         }
 
@@ -42,7 +42,7 @@ export async function processNewFiles() {
             .on('data', (row) => {
               rows.push(row);
               Object.keys(row).forEach((key) => headers.add(key));
-              if (preview.length < 5) preview.push(row);
+              if (preview.length < previewLimit) preview.push(row);
             })
             .on('end', resolve)
             .on('error', reject);
@@ -54,9 +54,9 @@ export async function processNewFiles() {
           metadata: {
             rowCount: rows.length,
             headers: Array.from(headers),
-            preview
+            preview,
           },
-          status: 'Processed'
+          status: 'Processed',
         });
 
         await fileDoc.save();
