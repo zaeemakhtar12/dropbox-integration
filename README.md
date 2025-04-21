@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📦 Dropbox File Monitoring & Processing System
 
 This is a full-stack application built with **Node.js**, **MongoDB**, and **Next.js** that monitors a specific folder in **Dropbox**. When a new `.csv` file is added, it:
@@ -40,3 +41,6 @@ This is a full-stack application built with **Node.js**, **MongoDB**, and **Next
 ```bash
 git clone https://github.com/Eveonix-Pvt-Ltd/Dropbox-Integration-Zaeem.git
 cd Dropbox-Integration-Zaeem
+=======
+# dropbox-integration
+>>>>>>> 4d6d0e640f3913b16d8c987d2930ea03ff7ed7b5
