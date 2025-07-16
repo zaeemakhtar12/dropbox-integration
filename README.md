@@ -30,7 +30,6 @@ This is a full-stack application built with **Node.js**, **MongoDB**, and **Next
 - **Frontend:** Next.js (App Router + Tailwind CSS)
 - **Cloud Storage:** Dropbox API
 - **File Handling:** `fs`, `csv-parser`
-- **Optional Deployment:** Vercel (frontend), Render/AWS (backend)
 
 ---
 
